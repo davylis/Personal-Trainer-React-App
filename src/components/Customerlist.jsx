@@ -77,7 +77,7 @@ function Customerlist() {
   };
 
   return (
-    <>
+    <div className="full-width">
       <AddCustomer handleFetch={handleFetch} />
       <div className="ag-theme-material" style={{ height: 500, width: "100%" }}>
 
@@ -85,7 +85,6 @@ function Customerlist() {
             rowData={customers}
             columnDefs={colDefs}
             pagination={true}
-            paginationAutoPageSize={true}
             domLayout="autoHeight"
             suppressCellFocus={true}
           />
@@ -95,9 +94,9 @@ function Customerlist() {
         open={open}
         autoHideDuration={3000}
         onClose={handleCloseSnackbar}
-        message="Car deleted"
+        message="Customer deleted"
       />
-    </>
+    </div>
   );
 }
 
