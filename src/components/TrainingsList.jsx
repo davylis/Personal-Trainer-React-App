@@ -1,7 +1,19 @@
 import React from 'react';
+import Button from '@mui/material/Button';
 
 function TrainingsList() {
-  return <div>Trainings List Component</div>;
+
+    const handleClickOpen = () => {
+        setOpen(true);
+      };
+    
+  return (
+    <>
+  <Button variant="outlined" onClick={handleClickOpen}>
+  Add Training
+</Button>
+</>
+);
 }
 
 export default TrainingsList;

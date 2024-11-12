@@ -9,6 +9,7 @@ import EditCustomer from "./EditCustomer";
 
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-material.css";
+import TrainingsList from "./TrainingsList";
 
 function Customerlist() {
   //state variable which holds an array
@@ -26,6 +27,18 @@ function Customerlist() {
     { field: "firstname", filter: true },
     { field: "lastname", filter: true },
     { field: "phone", filter: true, width: 150 },
+    {
+      cellRenderer: (params) => (
+        <TrainingsList
+          handleFetch={handleFetch}
+          data={params.data}
+          variant="contained"
+          color="primary"
+          size="small"
+        />
+      ),
+      width: 120,
+    },
     {
       cellRenderer: (params) => (
         <EditCustomer
