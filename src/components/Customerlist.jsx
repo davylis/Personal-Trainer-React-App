@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { fetchCustomers, deleteCustomer } from "../ptapi";
 import AddCustomer from "./AddCustomer";
+import ExportData from "./ExportData";
 import { AgGridReact } from "ag-grid-react";
 import Button from "@mui/material/Button";
 import Snackbar from "@mui/material/Snackbar";
@@ -19,34 +20,37 @@ function Customerlist() {
     horizontal: "center",
   });
 
-  const {vertical, horizontal, open} = snackbarState;
+  const { vertical, horizontal, open } = snackbarState;
 
   const [colDefs] = useState([
     { field: "firstname", filter: true },
     { field: "lastname", filter: true },
     { field: "phone", filter: true, width: 150 },
     {
-        cellRenderer: params => <EditCustomer
-        handleFetch = {handleFetch}
-        data={params.data} 
-        variant="contained"
-        color="primary"
-        size="small" 
-        />, 
-      width:120
-     },
-     {
-        headerName: "Actions",
-        cellRenderer: params =>  (<Button
-            onClick={() => handleDelete(params.data._links.self.href)}
-            variant="contained"
-            color="secondary"
-            size="small"
-          >
-            Delete
-          </Button>
-        ),
-        width: 120,
+      cellRenderer: (params) => (
+        <EditCustomer
+          handleFetch={handleFetch}
+          data={params.data}
+          variant="contained"
+          color="primary"
+          size="small"
+        />
+      ),
+      width: 120,
+    },
+    {
+      headerName: "Actions",
+      cellRenderer: (params) => (
+        <Button
+          onClick={() => handleDelete(params.data._links.self.href)}
+          variant="contained"
+          color="secondary"
+          size="small"
+        >
+          Delete
+        </Button>
+      ),
+      width: 120,
     },
   ]);
 
@@ -78,16 +82,19 @@ function Customerlist() {
 
   return (
     <div className="full-width">
-      <AddCustomer handleFetch={handleFetch} />
-      <div className="ag-theme-material" style={{ height: 500, width: "100%" }}>
+      <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
+        <AddCustomer handleFetch={handleFetch} />
+        <ExportData handleFetch={handleFetch} />
+      </div>
 
-          <AgGridReact
-            rowData={customers}
-            columnDefs={colDefs}
-            pagination={true}
-            domLayout="autoHeight"
-            suppressCellFocus={true}
-          />
+      <div className="ag-theme-material" style={{ height: 500, width: "100%" }}>
+        <AgGridReact
+          rowData={customers}
+          columnDefs={colDefs}
+          pagination={true}
+          domLayout="autoHeight"
+          suppressCellFocus={true}
+        />
       </div>
       <Snackbar
         anchorOrigin={{ vertical, horizontal }}
