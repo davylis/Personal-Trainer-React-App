@@ -42,3 +42,12 @@ export function updateCustomer(url, updateCustomer) {
         return response.json();
     });
 }
+export function fetchTrainings() {
+        return fetch(import.meta.env.VITE_TRAININGS_URL)
+        .then(response => {
+            if (!response.ok)
+                throw new Error("Error in fetch: " + response.statusText);
+    
+            return response.json();
+        })
+    }
