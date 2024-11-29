@@ -50,4 +50,6 @@ export function fetchTrainings() {
     
             return response.json();
         })
+        //fetch the customer data
+
     }

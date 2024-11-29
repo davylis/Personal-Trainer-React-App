@@ -9,7 +9,6 @@ import { fetchTrainings } from "../ptapi";
 function TrainingsList() {
       const [trainings, setTrainings] = useState([]);
       const [open, setOpen] = useState(false);
-
       const [colDefs] = useState([
         { field: "activity", headerName: "Activity", filter: true, sortable: true, width: 250 },
         {
@@ -20,15 +19,20 @@ function TrainingsList() {
           width: 300,
           valueFormatter: params => dayjs(params.value).format("DD.MM.YYYY HH:mm")
         },
-        { field: "duration", headerName: "Duration (min)", width: 150, filte: true, sortable: true },
+        { field: "duration", 
+          headerName: "Duration (min)", 
+          width: 150, 
+          filte: true, 
+          sortable: true },
         { 
           field: "customer", 
           headerName: "Customer",
           filter: true,
           sortable: true,
           width: 150,
-          valueGetter: params => params.data.customer ?
-            `${params.data.customer.firstname || ""} ${params.data.customer.lastname || ""}` : ''
+          valueGetter: params => {
+            return `${params.data.customer?.firstname} ${params.data.customer?.lastname}`;
+          }
         },
       ]);
     
