@@ -9,6 +9,8 @@ import { fetchTrainings } from "../ptapi";
 function TrainingsList() {
       const [trainings, setTrainings] = useState([]);
       const [open, setOpen] = useState(false);
+      const [loading, setLoading] = useState(true);
+      const [error, setError] = useState(null);
       const [colDefs] = useState([
         { field: "activity", headerName: "Activity", filter: true, sortable: true, width: 250 },
         {
@@ -36,19 +38,25 @@ function TrainingsList() {
         },
       ]);
     
-      useEffect(() => {
-        handleFetch();
-      }, []);
+      useEffect(() => { handleFetchTraining() }, []);
 
-      console.log("Trainings:", trainings);
-
-      const handleFetch = () => {
+      const handleFetchTraining = () => {
         fetchTrainings()
-          .then(data => setTrainings(data._embedded.trainings))
-          .catch(err => console.error("Error fetching trainings:", err));
-      };
-
-
+            .then(data => {
+                setTrainings(data);
+            })
+            .catch((err) => setError(err.message))
+            .finally(() => setLoading(false));
+    };
+      console.log("Trainings:", trainings);
+  
+      if (loading) {
+        return <div>Loading data...</div>;
+      }
+    
+      if (error) {
+        return <div>Error: {error}</div>;
+      }
     
   return (
 
