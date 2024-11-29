@@ -1,12 +1,14 @@
 export function fetchCustomers() {
-    return fetch(import.meta.env.VITE_API_URL)
+    return fetch(import.meta.env.VITE_API_URL + "customers")
         .then(response => {
-            if (!response.ok)
+            if (!response.ok) {
                 throw new Error("Error in fetch: " + response.statusText);
-
+            }
             return response.json();
         });
 }
+
+
 export function deleteCustomer(url) {
     return fetch(url, { method: 'DELETE' })
         .then(response => {
@@ -17,7 +19,7 @@ export function deleteCustomer(url) {
         });
 }
 export function saveCustomer(newCustomer) {
-    return fetch(import.meta.env.VITE_API_URL, {
+    return fetch(import.meta.env.VITE_API_URL + "customers", {
         method: "POST",
         headers: { "Content-type": "application/json" },
         body: JSON.stringify(newCustomer)
@@ -43,13 +45,20 @@ export function updateCustomer(url, updateCustomer) {
     });
 }
 export function fetchTrainings() {
-        return fetch(import.meta.env.VITE_TRAININGS_URL)
+    return fetch(import.meta.env.VITE_API_URL + "gettrainings")
         .then(response => {
-            if (!response.ok)
-                throw new Error("Error in fetch: " + response.statusText);
-    
+            if (!response.ok) {
+                throw new Error("Error in fecth: " + response.statusText);
+            }
             return response.json();
-        })
-        //fetch the customer data
-
-    }
+        });
+}
+export function fetchOneCustomer(url) {
+    return fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to fetch customer');
+            }
+            return response.json();
+        });
+}
