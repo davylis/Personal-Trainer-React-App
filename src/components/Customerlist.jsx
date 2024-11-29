@@ -6,6 +6,7 @@ import { AgGridReact } from "ag-grid-react";
 import Button from "@mui/material/Button";
 import Snackbar from "@mui/material/Snackbar";
 import EditCustomer from "./EditCustomer";
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-material.css";
@@ -14,6 +15,8 @@ import TrainingsList from "./TrainingsList";
 function Customerlist() {
   //state variable which holds an array
   const [customers, setCustomers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const [snackbarState, setSnackbarState] = useState({
     open: false,
@@ -26,6 +29,10 @@ function Customerlist() {
   const [colDefs] = useState([
     { field: "firstname", filter: true },
     { field: "lastname", filter: true },
+    { field: "streetaddress", filter: true},
+    { field: "postcode", filter: true},
+    { field: "city", filter: true},
+    { field: "email", filter: true},
     { field: "phone", filter: true, width: 150 },
     {
       cellRenderer: (params) => (
@@ -54,14 +61,13 @@ function Customerlist() {
     {
       headerName: "Actions",
       cellRenderer: (params) => (
-        <Button
-          onClick={() => handleDelete(params.data._links.self.href)}
-          variant="contained"
-          color="secondary"
-          size="small"
-        >
-          Delete
-        </Button>
+                <Button
+                  color="error"
+                  size="small"
+                  onClick={() => handleDelete(params.data._links.self.href)}
+                >
+                  <HighlightOffIcon />
+                </Button>
       ),
       width: 120,
     },
@@ -74,7 +80,8 @@ function Customerlist() {
   const handleFetch = () => {
     fetchCustomers()
       .then((data) => setCustomers(data._embedded.customers))
-      .catch((err) => console.error(err));
+      .catch((err) => setError(err.message))
+      .finally(() => setLoading(false));
   };
 
   const handleDelete = (url) => {
@@ -93,6 +100,14 @@ function Customerlist() {
     setSnackbarState({ ...snackbarState, open: false });
   };
 
+  if (loading) {
+    return <div>Loading data...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
   return (
     <div className="full-width">
       <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
@@ -104,9 +119,9 @@ function Customerlist() {
         <AgGridReact
           rowData={customers}
           columnDefs={colDefs}
-          pagination={true}
-          domLayout="autoHeight"
-          suppressCellFocus={true}
+        pagination={true}
+        paginationAutoPageSize={true}
+        suppressCellFocus={true}
         />
       </div>
       <Snackbar
