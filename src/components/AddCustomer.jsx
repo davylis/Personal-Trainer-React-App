@@ -17,6 +17,10 @@ export default function AddCustomer(props) {
   const [customer, setCustomer] = useState({
     firstname: "",
     lastname: "",
+    streetaddress: "",
+    postcode: "",
+    city: "",
+    email: "",
     phone: "",
   });
 
@@ -63,6 +67,42 @@ export default function AddCustomer(props) {
             name="lastname"
             label="Lastname"
             value={customer.lastname}
+            onChange={handleChange}
+            fullWidth
+            variant="standard"
+          />
+          <TextField
+            margin="dense"
+            name="streetaddress"
+            label="Street Address"
+            value={customer.streetaddress}
+            onChange={handleChange}
+            fullWidth
+            variant="standard"
+          />
+          <TextField
+            margin="dense"
+            name="postcode"
+            label="Postcode"
+            value={customer.postcode}
+            onChange={handleChange}
+            fullWidth
+            variant="standard"
+          />
+          <TextField
+            margin="dense"
+            name="city"
+            label="City"
+            value={customer.city}
+            onChange={handleChange}
+            fullWidth
+            variant="standard"
+          />
+          <TextField
+            margin="dense"
+            name="email"
+            label="email"
+            value={customer.email}
             onChange={handleChange}
             fullWidth
             variant="standard"

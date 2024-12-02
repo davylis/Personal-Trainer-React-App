@@ -1,33 +1,39 @@
-import { useState, useEffect } from "react";
-import PropTypes from 'prop-types'
+import { useState } from "react";
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
+import PropTypes from 'prop-types';
 import { updateCustomer } from "../ptapi"
 
-EditCustomer.propTypes = {
-    handleFetch: PropTypes.func
-};
 
-export default function EditCustomer(props) {
+function EditCustomer(props) {
   const [open, setOpen] = useState(false);
   const [customer, setCustomer] = useState({
     firstname: "",
     lastname: "",
+    streetaddress: "",
+    postcode: "",
+    city: "",
+    email: "",
     phone: "",
   });
 
   const handleClickOpen = () => {
-    setOpen(true);
+    
     console.log(props.data);
     setCustomer({
       firstname: props.data.firstname,
       lastname: props.data.lastname,
+      streetaddress: props.data.streetaddress,
+      postcode: props.data.postcode,
+      city: props.data.city,
+      email: props.data.email,
       phone: props.data.phone,
     });
+    setOpen(true);
   };
 
   const handleClose = () => {
@@ -58,7 +64,7 @@ export default function EditCustomer(props) {
           <TextField
             margin="dense"
             name="firstname"
-            label="Firstname"
+            label="First Name"
             value={customer.firstname}
             onChange={handleChange}
             fullWidth
@@ -69,6 +75,42 @@ export default function EditCustomer(props) {
             name="lastname"
             label="Lastname"
             value={customer.lastname}
+            onChange={handleChange}
+            fullWidth
+            variant="standard"
+          />
+          <TextField
+            margin="dense"
+            name="streetaddress"
+            label="Street Address"
+            value={customer.streetaddress}
+            onChange={handleChange}
+            fullWidth
+            variant="standard"
+          />
+          <TextField
+            margin="dense"
+            name="postcode"
+            label="Postcode"
+            value={customer.postcode}
+            onChange={handleChange}
+            fullWidth
+            variant="standard"
+          />
+          <TextField
+            margin="dense"
+            name="city"
+            label="City"
+            value={customer.city}
+            onChange={handleChange}
+            fullWidth
+            variant="standard"
+          />
+          <TextField
+            margin="dense"
+            name="email"
+            label="email"
+            value={customer.email}
             onChange={handleChange}
             fullWidth
             variant="standard"
@@ -91,3 +133,22 @@ export default function EditCustomer(props) {
     </>
   );
 }
+EditCustomer.propTypes = {
+  data: PropTypes.shape({
+    firstname: PropTypes.string,
+    lastname: PropTypes.string,
+    phone: PropTypes.string,
+    streetaddress: PropTypes.string,
+    postcode: PropTypes.string,
+    city: PropTypes.string,
+    email: PropTypes.string,
+    _links: PropTypes.shape({
+      customer: PropTypes.shape({
+        href: PropTypes.string.isRequired,
+      }).isRequired,
+    }).isRequired,
+  }).isRequired,
+  handleFetch: PropTypes.func.isRequired,
+};
+
+export default EditCustomer;

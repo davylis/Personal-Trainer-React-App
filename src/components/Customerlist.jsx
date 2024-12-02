@@ -34,7 +34,9 @@ function Customerlist() {
     { field: "email", filter: true, width: 150},
     { field: "phone", filter: true, width: 150},
     {
-      cellRenderer: (params) => (
+      cellRenderer: (params) => {
+        console.log(params.data);
+        return(
         <EditCustomer
           handleFetch={handleFetch}
           data={params.data}
@@ -42,7 +44,8 @@ function Customerlist() {
           color="primary"
           size="small"
         />
-      ),
+      );
+    },
       width: 120,
     },
     {
