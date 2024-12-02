@@ -5,14 +5,21 @@ import "ag-grid-community/styles/ag-theme-material.css";
 import dayjs from "dayjs";
 import Snackbar from '@mui/material/Snackbar';
 import { fetchTrainings } from "../ptapi";
+import AddTraining from './AddTraining'; // Import AddTraining
+import ExportData from './ExportData';   // Import ExportData
 
 function TrainingsList() {
       const [trainings, setTrainings] = useState([]);
       const [open, setOpen] = useState(false);
       const [loading, setLoading] = useState(true);
       const [error, setError] = useState(null);
+
       const [colDefs] = useState([
-        { field: "activity", headerName: "Activity", filter: true, sortable: true, width: 250 },
+        { field: "activity", 
+          headerName: "Activity", 
+          filter: true, 
+          sortable: true, 
+          width: 250 },
         {
           field: "date",
           headerName: "Date",
@@ -38,14 +45,20 @@ function TrainingsList() {
         },
       ]);
     
-      useEffect(() => { handleFetchTraining() }, []);
+      useEffect(() => { 
+        handleFetchTraining() 
+      }, []);
 
       const handleFetchTraining = () => {
+        setLoading(true);
         fetchTrainings()
-            .then(data => {
+            .then((data) => {
                 setTrainings(data);
             })
-            .catch((err) => setError(err.message))
+            .catch((err) => { 
+              setError(err.message);
+              console.error("Error fetching trainings:", err);
+          })
             .finally(() => setLoading(false));
     };
       console.log("Trainings:", trainings);
@@ -59,8 +72,12 @@ function TrainingsList() {
       }
     
   return (
+<div className="full-width">
+      <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>    
+        <AddTraining handleFetch={handleFetchTraining} />
+        <ExportData handleFetch={handleFetchTraining} />
+      </div>
 
-<>
     <div className="ag-theme-material" style={{ height: 500, width: "100%" }}>
       <AgGridReact
         rowData={trainings}
@@ -72,12 +89,12 @@ function TrainingsList() {
     </div>
 
     <Snackbar
-                open={open}
-                autoHideDuration={3000}
-                onClose={() => setOpen(false)}
-                message="Training deleted"
-            />
-    </>
+      open={open}
+      autoHideDuration={3000}
+      onClose={() => setOpen(false)}
+      message="Training deleted"
+    />
+    </div>
 );
 }
 
