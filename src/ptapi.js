@@ -62,3 +62,16 @@ export function fetchOneCustomer(url) {
             return response.json();
         });
 }
+export function saveTraining(newTraining) {
+    return fetch(import.meta.env.VITE_API_URL + "trainings", {
+        method: "POST",
+        headers: { "Content-type": "application/json" },
+        body: JSON.stringify(newTraining)
+    })
+    .then(response => {
+        if (!response.ok)
+            throw new Error("Error in saving: " + response.statusText);
+
+        return response.json();
+    });
+}
