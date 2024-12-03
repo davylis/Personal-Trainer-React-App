@@ -23,7 +23,7 @@ function AddTraining(props) {
     const [customers, setCustomers] = useState([]);
     const [training, setTraining] = useState({
         activity: "",
-        date: "",
+        date: dayjs().toISOString(),
         duration: "",
         customer: "",
     });
@@ -33,24 +33,29 @@ function AddTraining(props) {
     const handleFetch = () => {
         fetchCustomers()
             .then(data => {
+                console.log("Fetched customer data:", data);
                 setCustomers(data._embedded.customers);
             })
             .catch(err => console.error("Error fetching data: ", err));
     };
 
     const handleClickOpen = () => {
-        setTraining({});
-        setOpen(true);
+        setTraining({
+            activity: "",
+            date: dayjs().toISOString(), // Reset to current date
+            duration: "",
+            customer: "",
+          });
+          setOpen(true);
       };
     
       const handleClose = () => {
         setOpen(false);
       };
 
-      const handleChange = (event) => {
-        setTraining({ ...training, [event.target.name]: event.target.value });
-      };
+      
       const handleSave = () => {
+        //console.log("Training payload:", training);
         saveTraining(training)
           .then(() => {
             props.handleFetch();
@@ -59,13 +64,17 @@ function AddTraining(props) {
           .catch((err) => console.error(err));
       };
 
+      const handleChange = (event) => {
+        setTraining({ ...training, [event.target.name]: event.target.value });
+      };
+
     const handleDateChange = (date) => {
         setTraining({ ...training, date: date ? date.toISOString() : null });
     };
 
       return (
         <>
-          <Button variant="outlined" onClick={handleClickOpen} style={{ zIndex: 10, position: 'relative' }}>
+          <Button variant="outlined" onClick={handleClickOpen}>
             Add Training
           </Button>
           <Dialog open={open} onClose={handleClose}>
@@ -98,6 +107,7 @@ function AddTraining(props) {
                 variant="standard"
               />
                <TextField
+               select
                 margin="dense"
                 name="customer"
                 label="Customer"
@@ -106,7 +116,7 @@ function AddTraining(props) {
                 fullWidth
                 variant="standard"
               > 
-              {Array.isArray(customers) && customers.map((customer) => (
+              {customers.map((customer) => (
                 <MenuItem key={customer._links.self.href} value={customer._links.self.href}>
                     {customer.firstname} {customer.lastname}
                 </MenuItem>

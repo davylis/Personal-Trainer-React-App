@@ -12,7 +12,8 @@ AddCustomer.propTypes = {
     handleFetch: PropTypes.func
 };
 
-export default function AddCustomer(props) {
+function AddCustomer(props) {
+
   const [open, setOpen] = useState(false);
   const [customer, setCustomer] = useState({
     firstname: "",
@@ -25,6 +26,15 @@ export default function AddCustomer(props) {
   });
 
   const handleClickOpen = () => {
+    setCustomer({
+      firstname: "",
+      lastname: "",
+      streetaddress: "",
+      postcode: "",
+      city: "",
+      email: "",
+      phone: "",
+    });
     setOpen(true);
   };
 
@@ -125,3 +135,4 @@ export default function AddCustomer(props) {
     </>
   );
 }
+export default AddCustomer;

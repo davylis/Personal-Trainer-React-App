@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { fetchCustomers, deleteCustomer } from "../ptapi";
 import AddCustomer from "./AddCustomer";
-import ExportData from "./ExportData";
 import { AgGridReact } from "ag-grid-react";
 import Button from "@mui/material/Button";
 import Snackbar from "@mui/material/Snackbar";
@@ -12,11 +11,12 @@ import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-material.css";
 
 function Customerlist() {
-  //state variable which holds an array
   const [customers, setCustomers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
+  const [gridApi, setGridApi] = useState(null);
+  
+  // Define snackbar state with anchor origin positions
   const [snackbarState, setSnackbarState] = useState({
     open: false,
     vertical: "top",
@@ -35,28 +35,27 @@ function Customerlist() {
     { field: "phone", filter: true, width: 150},
     {
       cellRenderer: (params) => {
-        console.log(params.data);
-        return(
-        <EditCustomer
-          handleFetch={handleFetch}
-          data={params.data}
-          variant="contained"
-          color="primary"
-          size="small"
-        />
-      );
-    },
+        return (
+          <EditCustomer
+            handleFetch={handleFetch}
+            data={params.data}
+            variant="contained"
+            color="primary"
+            size="small"
+          />
+        );
+      },
       width: 120,
     },
     {
       cellRenderer: (params) => (
-                <Button
-                  color="error"
-                  size="small"
-                  onClick={() => handleDelete(params.data._links.self.href)}
-                >
-                  <HighlightOffIcon />
-                </Button>
+        <Button
+          color="error"
+          size="small"
+          onClick={() => handleDelete(params.data._links.self.href)}
+        >
+          <HighlightOffIcon />
+        </Button>
       ),
       width: 120,
     },
@@ -78,15 +77,30 @@ function Customerlist() {
       deleteCustomer(url)
         .then(() => {
           handleFetch();
-          setSnackbarState({ ...snackbarState, open: true });
+          // Open snackbar after deleting
+          setSnackbarState({ open: true, vertical: "top", horizontal: "center" });
         })
-        .catch((err) => console.error("Error deleting car:", err));
+        .catch((err) => {
+          console.error("Error deleting customer:", err);
+          alert("An error occurred while deleting the customer!");
+        });
     }
   };
 
   const handleCloseSnackbar = () => {
-    //close the snackbar
     setSnackbarState({ ...snackbarState, open: false });
+  };
+
+  const onGridReady = (params) => {
+    setGridApi(params.api);
+  };
+
+  const onBtnExport = () => {
+    if (gridApi) {
+      gridApi.exportDataAsCsv();
+    } else {
+      console.error('Grid API is not set');
+    }
   };
 
   if (loading) {
@@ -99,21 +113,29 @@ function Customerlist() {
 
   return (
     <div className="full-width">
-      <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>    
+      <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
         <AddCustomer handleFetch={handleFetch} />
-        <ExportData handleFetch={handleFetch} />
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={onBtnExport}
+        >
+          Export to CSV
+        </Button>
       </div>
 
       <div className="ag-theme-material" style={{ height: 500, width: "100%" }}>
         <AgGridReact
           rowData={customers}
           columnDefs={columns}
-        pagination={true}
-        paginationAutoPageSize={true}
-        suppressCellFocus={true}
-        
+          pagination={true}
+          paginationAutoPageSize={true}
+          suppressCellFocus={true}
+          onGridReady={onGridReady}
         />
       </div>
+
+      {/* Snackbar for customer deletion */}
       <Snackbar
         anchorOrigin={{ vertical, horizontal }}
         open={open}
