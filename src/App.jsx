@@ -122,10 +122,10 @@ function App() {
   };
 
   const menuItems = [
-    { text: "Customers", icon: <PeopleIcon />, path: "/customers" },
-    { text: "Trainings", icon: <FitnessCenterIcon />, path: "/trainings" },
-    { text: "Calendar", icon: <CalendarTodayIcon />, path: "/calendar" },
-    { text: "Statistics", icon: <BarChartIcon />, path: "/statistics" },
+    { text: "Customers", icon: <PeopleIcon sx={{ color: "#ff8a15" }} />, path: "/customers" },
+    { text: "Trainings", icon: <FitnessCenterIcon sx={{ color: "#ff8a15" }}/>, path: "/trainings" },
+    { text: "Calendar", icon: <CalendarTodayIcon sx={{ color: "#ff8a15" }}/>, path: "/calendar" },
+    { text: "Statistics", icon: <BarChartIcon sx={{ color: "#ff8a15" }}/>, path: "/statistics" },
   ];
 
   return (
@@ -175,9 +175,8 @@ function App() {
           ))}
         </List>
       </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+      <Box component="main" sx={{ flexGrow: 1, p: 3, pt: 4 }}> {/* Added pt: 4 for better top spacing */}
         <DrawerHeader />
-        <Toolbar />
         <Routes>
           <Route path="/customers" element={<Customerlist />} />
           <Route path="/trainings" element={<TrainingsList />} />

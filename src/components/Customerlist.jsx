@@ -6,6 +6,7 @@ import Button from "@mui/material/Button";
 import Snackbar from "@mui/material/Snackbar";
 import EditCustomer from "./EditCustomer";
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import { Box, Typography } from "@mui/material";
 
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-material.css";
@@ -26,13 +27,13 @@ function Customerlist() {
   const { vertical, horizontal, open } = snackbarState;
 
   const [columns] = useState([
-    { field: "firstname", filter: true, width: 150},
-    { field: "lastname", filter: true, width: 150},
-    { field: "streetaddress", filter: true, width: 150},
-    { field: "postcode", filter: true, width: 150},
-    { field: "city", filter: true, width: 150},
-    { field: "email", filter: true, width: 150},
-    { field: "phone", filter: true, width: 150},
+    { field: "firstname", filter: true, width: 200},
+    { field: "lastname", filter: true, width: 200},
+    { field: "streetaddress", filter: true, width: 200},
+    { field: "postcode", filter: true, width: 200},
+    { field: "city", filter: true, width: 200},
+    { field: "email", filter: true, width: 200},
+    { field: "phone", filter: true, width: 200},
     {
       cellRenderer: (params) => {
         return (
@@ -112,38 +113,61 @@ function Customerlist() {
   }
 
   return (
-    <div className="full-width">
-      <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
-        <AddCustomer handleFetch={handleFetch} />
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={onBtnExport}
+    <Box sx={{ width: "100%", marginTop: 0 }}>
+      <div className="full-width">
+        <div style={{ display: "flex", gap: "10px", marginBottom: "10px" }}>
+          <Box sx={{ padding: 2 }}>
+            {/* Customer Heading */}
+            <Typography
+              variant="h5"
+              component="h2"
+              sx={{ mb: 2, color: "#6c757d" }}
+            >
+              Customers
+            </Typography>
+  
+            <Box sx={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
+              <AddCustomer handleFetch={handleFetch} />
+              <Button variant="contained" color="primary" onClick={onBtnExport}>
+                Export to CSV
+              </Button>
+            </Box>
+          </Box>
+        </div>
+  
+        {/* Box containing the customer list (AgGridReact) with an outline */}
+        <Box
+          sx={{
+            border: "1px solid #ddd",  // Adding border
+            borderRadius: "8px",       // Optional: rounded corners
+            boxShadow: 2,              // Optional: add shadow for better visual appeal
+            padding: 2,                // Optional: space inside the Box
+            marginTop: 2,              // Optional: gap above the table
+          }}
         >
-          Export to CSV
-        </Button>
-      </div>
-
-      <div className="ag-theme-material" style={{ height: 500, width: "100%" }}>
-        <AgGridReact
-          rowData={customers}
-          columnDefs={columns}
-          pagination={true}
-          paginationAutoPageSize={true}
-          suppressCellFocus={true}
-          onGridReady={onGridReady}
+          <div className="ag-theme-material" style={{ height: 500, width: "100%" }}>
+            <AgGridReact
+              rowData={customers}
+              columnDefs={columns}
+              pagination={true}
+              paginationAutoPageSize={true}
+              suppressCellFocus={true}
+              onGridReady={onGridReady}
+              paginationPageSize={10} 
+            />
+          </div>
+        </Box>
+  
+        {/* Snackbar for customer deletion */}
+        <Snackbar
+          anchorOrigin={{ vertical, horizontal }}
+          open={open}
+          autoHideDuration={3000}
+          onClose={handleCloseSnackbar}
+          message="Customer deleted"
         />
       </div>
-
-      {/* Snackbar for customer deletion */}
-      <Snackbar
-        anchorOrigin={{ vertical, horizontal }}
-        open={open}
-        autoHideDuration={3000}
-        onClose={handleCloseSnackbar}
-        message="Customer deleted"
-      />
-    </div>
+    </Box>
   );
 }
 
