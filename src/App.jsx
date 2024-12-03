@@ -56,7 +56,6 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   alignItems: 'center',
   justifyContent: 'flex-end',
   padding: theme.spacing(0, 1),
-  // necessary for content to be below app bar
   ...theme.mixins.toolbar,
 }));
 
@@ -111,9 +110,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 function App() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-  //navigation hook
   const navigate = useNavigate();
-  //hook to get current path
   const location = useLocation();
 
   const handleDrawerOpen = () => {
@@ -124,7 +121,6 @@ function App() {
     setOpen(false);
   };
 
-  //drawer items
   const menuItems = [
     { text: "Customers", icon: <PeopleIcon />, path: "/customers" },
     { text: "Trainings", icon: <FitnessCenterIcon />, path: "/trainings" },
@@ -135,81 +131,60 @@ function App() {
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <AppBar 
-        position="fixed" 
-        open={open}
-        sx={{
-          backgroundColor: "#ff8a15",
-        }}
-      >
+      <AppBar position="fixed" open={open} sx={{ backgroundColor: "#ff8a15" }}>
         <Toolbar>
-        <IconButton
+          <IconButton
             color="inherit"
             aria-label="open drawer"
             onClick={handleDrawerOpen}
             edge="start"
             sx={[
-              {
-                marginRight: 5,
-              },
+              { marginRight: 5 },
               open && { display: 'none' },
             ]}
           >
             <MenuIcon />
           </IconButton>
-        <Typography variant="h6" noWrap component="div">
+          <Typography variant="h6" noWrap component="div">
             Personal Trainer App
           </Typography>
-          </Toolbar>
+        </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>
-         <DrawerHeader>
+        <DrawerHeader>
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
           </IconButton>
         </DrawerHeader>
         <Divider />
-          <List>
-            {menuItems.map((item) => (
-              <ListItem
-                key={item.text}
-                disablePadding
-                selected={location.pathname === item.path}
-                onClick={() => navigate(item.path)}
-              >
-                <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? "initial" : "center",
-                  px: 2.5,
-                }}
-              >
-              <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : "auto",
-                    justifyContent: "center",
-                  }}
-                >
+        <List>
+          {menuItems.map((item) => (
+            <ListItem
+              key={item.text}
+              disablePadding
+              selected={location.pathname === item.path}
+              onClick={() => navigate(item.path)}
+            >
+              <ListItemButton sx={{ minHeight: 48, justifyContent: open ? "initial" : "center", px: 2.5 }}>
+                <ListItemIcon sx={{ minWidth: 0, mr: open ? 3 : "auto", justifyContent: "center" }}>
                   {item.icon}
                 </ListItemIcon>
-
-                  <ListItemText primary={item.text} sx={{ opacity: open ? 1 : 0 }} />
-                </ListItemButton>
-              </ListItem>
-            ))}
-          </List>
-          </Drawer>
+                <ListItemText primary={item.text} sx={{ opacity: open ? 1 : 0 }} />
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List>
+      </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-         <DrawerHeader />
+        <DrawerHeader />
         <Toolbar />
-      <Routes>
-        <Route path="/customers" element={<Customerlist />} />
-        <Route path="/trainings" element={<TrainingsList/>} />
-        <Route path="/calendar" element={<CalendarList/>} />
-        <Route path="/statistics" element={<StatisticsList/>} />
-        <Route path="/" element={<div>Welcome to the Personal Trainer App</div>} />
-      </Routes>
+        <Routes>
+          <Route path="/customers" element={<Customerlist />} />
+          <Route path="/trainings" element={<TrainingsList />} />
+          <Route path="/calendar" element={<CalendarList />} />
+          <Route path="/statistics" element={<StatisticsList />} />
+          <Route path="/" element={<div>Welcome to the Personal Trainer App</div>} />
+        </Routes>
       </Box>
     </Box>
   );
