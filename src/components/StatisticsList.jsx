@@ -6,8 +6,6 @@ import {
   Line,
   Bar,
   LineChart,
-  ReferenceLine,
-  ReferenceDot,
   XAxis,
   YAxis,
   Tooltip,
@@ -90,9 +88,6 @@ return (
               </LineChart>
             </Brush>
 
-            {/* Optionally, add a reference line for maximum total time */}
-            <ReferenceLine y={Math.max(...trainingData.map(item => item.totalTime))} label="Max Time" stroke="red" />
-            <ReferenceDot x="Activity C" y={1300} stroke="red" />
           </ComposedChart>
         </ResponsiveContainer>
       </div>

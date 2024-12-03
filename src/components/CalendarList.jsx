@@ -20,7 +20,7 @@ function CalendarList() {
       .then((trainings) => {
         const formattedEvents = trainings.map((training) => {
           return {
-            title: training.activity,
+            title: `${training.activity} - ${training.customer.firstname} ${training.customer.lastname}`,
             start: new Date(training.date),
             end: new Date(new Date(training.date).getTime() + training.duration * 60000),
             customer: `${training.customer?.firstname} ${training.customer?.lastname}`.trim(),
