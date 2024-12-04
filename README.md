@@ -11,14 +11,23 @@ This web-based application is designed to manage customer training schedules, mo
 - **Statistics and Analytics**: View visualized data on customer activity, training duration, and performance metrics using interactive charts.
 - **Responsive Design**:Mobile-friendly interface.
 
-## IP Pools Main Page
-![IP Pools main screen](./assets/ippools.png)
+## Customers Page
+![Customerlist](./assets/customerlist.png)
 
-## IP Addresses Page
-![IP Addresses screen](./assets/ipaddresses.png)
+## Trainings Page
+![Traininglist](./assets/traininglist.png)
 
-## IP Services Page
-![IP Addresses screen](./assets/ipservices.png)
+## Calendar Page
+![Calendar](./assets/calendar.png)
+
+## Statistics Page
+![Statistics](./assets/statistics.png)
+
+## Add Training Page
+![Addtraining](./assets/addtraining.png)
+
+## Edit Customer Page
+![Editcustomer](./assets/editcustomer.png)
 
 ## Technologies Used
 - **React**
@@ -33,19 +42,18 @@ This web-based application is designed to manage customer training schedules, mo
 ## Prerequisites
 -Clone the repository
 
-```
+```sh
 git clone <repository-url>
 ```
 -go to right directory
 
-```
+```sh
 cd Personal-Trainer-React-App
-
 ```
 -install the dependecies
-```
+```sh
 npm i
-``
+```
 
 ## Environment Configuration
 To configure the application, you need to create a `.env` file in the root directory of the repository.
