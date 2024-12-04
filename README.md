@@ -34,8 +34,10 @@ This web-based application is designed to manage customer training schedules, mo
 - **Material-UI (MUI)**
 - **Day.js**
 - **Recharts**
+- **Lodash**
 - **AG Grid**
 - **Big Calendar**
+- **React Router**
 
 # Installation 
 
