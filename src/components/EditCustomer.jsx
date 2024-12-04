@@ -1,13 +1,12 @@
 import { useState } from "react";
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
-import PropTypes from 'prop-types';
-import { updateCustomer } from "../ptapi"
-
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import PropTypes from "prop-types";
+import { updateCustomer } from "../ptapi";
 
 function EditCustomer(props) {
   const [open, setOpen] = useState(false);
@@ -22,7 +21,6 @@ function EditCustomer(props) {
   });
 
   const handleClickOpen = () => {
-    
     console.log(props.data);
     setCustomer({
       firstname: props.data.firstname,
@@ -39,7 +37,7 @@ function EditCustomer(props) {
   const handleClose = () => {
     setOpen(false);
   };
-  //For saving information to the right field
+  //for saving information to the right field
   const handleChange = (event) => {
     setCustomer({ ...customer, [event.target.name]: event.target.value });
   };
@@ -55,8 +53,17 @@ function EditCustomer(props) {
 
   return (
     <>
-      <Button size="small" onClick={handleClickOpen}>
-        Edit customer
+      <Button
+        size="small"
+        variant="contained"
+        sx={{
+          backgroundColor: "#ffbb76",
+          color: "white",
+          "&:hover": { backgroundColor: "#e67612" },
+        }}
+        onClick={handleClickOpen}
+      >
+        Edit
       </Button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Edit customer</DialogTitle>

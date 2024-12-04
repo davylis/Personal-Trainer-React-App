@@ -5,19 +5,20 @@ import { AgGridReact } from "ag-grid-react";
 import Button from "@mui/material/Button";
 import Snackbar from "@mui/material/Snackbar";
 import EditCustomer from "./EditCustomer";
-import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import FileUploadIcon from "@mui/icons-material/FileUpload";
+import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
 import { Box, Typography } from "@mui/material";
 
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-material.css";
+import "../Customerlist.css";
 
 function Customerlist() {
   const [customers, setCustomers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [gridApi, setGridApi] = useState(null);
-  
-  // Define snackbar state with anchor origin positions
+
   const [snackbarState, setSnackbarState] = useState({
     open: false,
     vertical: "top",
@@ -27,25 +28,66 @@ function Customerlist() {
   const { vertical, horizontal, open } = snackbarState;
 
   const [columns] = useState([
-    { field: "firstname", filter: true, width: 200},
-    { field: "lastname", filter: true, width: 200},
-    { field: "streetaddress", filter: true, width: 200},
-    { field: "postcode", filter: true, width: 200},
-    { field: "city", filter: true, width: 200},
-    { field: "email", filter: true, width: 200},
-    { field: "phone", filter: true, width: 200},
     {
-      cellRenderer: (params) => {
-        return (
-          <EditCustomer
-            handleFetch={handleFetch}
-            data={params.data}
-            variant="contained"
-            color="primary"
-            size="small"
-          />
-        );
-      },
+      field: "firstname",
+      headerName: "First Name",
+      filter: true,
+      width: 200,
+      headerClass: "custom-header",
+    },
+    {
+      field: "lastname",
+      headerName: "Last Name",
+      filter: true,
+      width: 200,
+      headerClass: "custom-header",
+    },
+    {
+      field: "streetaddress",
+      headerName: "Street Address",
+      filter: true,
+      width: 200,
+      headerClass: "custom-header",
+    },
+    {
+      field: "postcode",
+      headerName: "Postcode",
+      filter: true,
+      width: 200,
+      headerClass: "custom-header",
+    },
+    {
+      field: "city",
+      headerName: "City",
+      filter: true,
+      width: 200,
+      headerClass: "custom-header",
+    },
+    {
+      field: "email",
+      headerName: "Email",
+      filter: true,
+      width: 200,
+      headerClass: "custom-header",
+    },
+    {
+      field: "phone",
+      headerName: "Phone",
+      filter: true,
+      width: 200,
+      headerClass: "custom-header",
+    },
+    {
+      cellRenderer: (params) => (
+        <EditCustomer
+          handleFetch={handleFetch}
+          data={params.data}
+          variant="contained"
+          color="primary"
+          size="small"
+        />
+      ),
+      headerClass: "custom-header",
       width: 120,
     },
     {
@@ -55,9 +97,10 @@ function Customerlist() {
           size="small"
           onClick={() => handleDelete(params.data._links.self.href)}
         >
-          <HighlightOffIcon />
+          <PersonRemoveIcon />
         </Button>
       ),
+      headerClass: "custom-header",
       width: 120,
     },
   ]);
@@ -78,8 +121,11 @@ function Customerlist() {
       deleteCustomer(url)
         .then(() => {
           handleFetch();
-          // Open snackbar after deleting
-          setSnackbarState({ open: true, vertical: "top", horizontal: "center" });
+          setSnackbarState({
+            open: true,
+            vertical: "top",
+            horizontal: "center",
+          });
         })
         .catch((err) => {
           console.error("Error deleting customer:", err);
@@ -100,7 +146,7 @@ function Customerlist() {
     if (gridApi) {
       gridApi.exportDataAsCsv();
     } else {
-      console.error('Grid API is not set');
+      console.error("Grid API is not set");
     }
   };
 
@@ -115,50 +161,57 @@ function Customerlist() {
   return (
     <Box sx={{ width: "100%", marginTop: 0 }}>
       <div className="full-width">
-        <div style={{ display: "flex", gap: "10px", marginBottom: "10px" }}>
-          <Box sx={{ padding: 2 }}>
-            {/* Customer Heading */}
-            <Typography
-              variant="h5"
-              component="h2"
-              sx={{ mb: 2, color: "#6c757d" }}
+        <Box sx={{ padding: 2 }}>
+          <Typography
+            variant="h5"
+            component="h2"
+            sx={{ mb: 2, color: "#9a8774" }}
+          >
+            Customers
+          </Typography>
+
+          <Box sx={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
+            <AddCustomer handleFetch={handleFetch} />
+            <Button
+              variant="contained"
+              sx={{
+                backgroundColor: "#ffb061",
+                color: "white",
+                "&:hover": { backgroundColor: "#e67612" },
+              }}
+              startIcon={<FileUploadIcon />}
+              onClick={onBtnExport}
             >
-              Customers
-            </Typography>
-  
-            <Box sx={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
-              <AddCustomer handleFetch={handleFetch} />
-              <Button variant="contained" color="primary" onClick={onBtnExport}>
-                Export to CSV
-              </Button>
-            </Box>
+              Export to CSV
+            </Button>
           </Box>
-        </div>
-  
-        {/* Box containing the customer list (AgGridReact) with an outline */}
+        </Box>
+
         <Box
           sx={{
-            border: "1px solid #ddd",  // Adding border
-            borderRadius: "8px",       // Optional: rounded corners
-            boxShadow: 2,              // Optional: add shadow for better visual appeal
-            padding: 2,                // Optional: space inside the Box
-            marginTop: 2,              // Optional: gap above the table
+            border: "1px solid #ddd",
+            borderRadius: "8px",
+            boxShadow: 2,
+            padding: 2,
+            marginTop: 2,
           }}
         >
-          <div className="ag-theme-material" style={{ height: 500, width: "100%" }}>
+          <div
+            className="ag-theme-material"
+            style={{ height: 500, width: "100%" }}
+          >
             <AgGridReact
               rowData={customers}
               columnDefs={columns}
-              pagination={true}
-              paginationAutoPageSize={true}
-              suppressCellFocus={true}
+              pagination
+              paginationAutoPageSize
+              suppressCellFocus
               onGridReady={onGridReady}
-              paginationPageSize={10} 
+              paginationPageSize={10}
             />
           </div>
         </Box>
-  
-        {/* Snackbar for customer deletion */}
+
         <Snackbar
           anchorOrigin={{ vertical, horizontal }}
           open={open}

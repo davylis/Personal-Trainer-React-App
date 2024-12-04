@@ -1,19 +1,19 @@
 import { useState } from "react";
-import PropTypes from 'prop-types'
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
+import PropTypes from "prop-types";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import GroupAddIcon from "@mui/icons-material/GroupAdd";
 import { saveCustomer } from "../ptapi";
 
 AddCustomer.propTypes = {
-    handleFetch: PropTypes.func
+  handleFetch: PropTypes.func,
 };
 
 function AddCustomer(props) {
-
   const [open, setOpen] = useState(false);
   const [customer, setCustomer] = useState({
     firstname: "",
@@ -57,7 +57,16 @@ function AddCustomer(props) {
 
   return (
     <>
-      <Button variant="outlined" onClick={handleClickOpen}>
+      <Button
+        startIcon={<GroupAddIcon />}
+        variant="contained"
+        sx={{
+          backgroundColor: "#ffb061",
+          color: "white",
+          "&:hover": { backgroundColor: "#e67612" },
+        }}
+        onClick={handleClickOpen}
+      >
         Add customer
       </Button>
       <Dialog open={open} onClose={handleClose}>
