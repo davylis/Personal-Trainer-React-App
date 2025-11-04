@@ -1,5 +1,7 @@
 # Personal Trainer React Application
 
+https://davylis.github.io/Personal-Trainer-React-App/
+
 ## Introduction
 This web-based application is designed to manage customer training schedules, monitor activities, and enhance fitness tracking. This application allows personal trainers to efficiently manage training plans, track customer activities, and maintain a user-friendly interface for all interactions.
 
